@@ -1,0 +1,63 @@
+Ashmit 1 transform algorithm:
+% close all;clc;clear all;
+% addpath(genpath('E:\'));
+imgI=imread('lung.jpg');
+data0=imgI;%imread('a.jpg');
+data=data0;%(300:600,400:800,1:3);
+figure,imagesc(data);
+title('original image');
+imgIR0=uint8(data);
+var0=(double(imgIR0)-mean(imgIR0(:))).^2;
+med=double(median(imgIR0(:)));
+SNR0=mean(imgIR0(:)).*med ./ var0;
+figure,imagesc(SNR0/255);   %Red band
+title('water content')
+% SNR1=SNR0(:,:,1:3)/255 >0.8 & SNR0/255<1;
+data2=data0;
+% data2(300:600,400:800,1:3)=SNR0;
+figure,imagesc(data2(:,:,1));   %Red band
+title('water content')
+cc1=rgb2cmyk1(imgIR0);
+cc2=rgb2cmyk1(imgIR0);
+figure,imagesc(squeeze(cc1(:,:,1)) );   %Red band
+figure,imagesc(squeeze(cc2(:,:,2)));   %Red band
+figure,imagesc(squeeze(cc1(:,:,3)));   %Red band
+figure,imagesc(squeeze(cc2(:,:,4)));   %Red band
+
+Ashmit 2 transform Algorithm:
+
+clear;close all;clc
+data0=imread('lung.jpg');
+data=data0(:,:,1:3);
+figure,imagesc(data);
+title('original image');
+% data1=imresize(data(1:2000,1:1200,:),0.6,'nearest');
+imgIR0=uint8(data);
+imgIR0(find(imgIR0<=0))=0;
+% figure,hist(double(imgIR0(:)));
+
+var0=(double(imgIR0)-mean(imgIR0,3)).^2;
+%
+med=double(median(imgIR0,3));
+SNR0=mean(imgIR0,3).*med ./ var0;
+% figure,imagesc(squeeze(SNR0(:,:)));
+
+figure,imagesc(squeeze(SNR0(:,:,3))/255);   %Red band
+title('blue band');
+dummy3=squeeze(SNR0(:,:,2));
+figure,imagesc(dummy3/255);   %Red band
+title('green band');
+figure,imagesc(squeeze(SNR0(:,:,1))/255);   %Red band
+title('red band')
+% figure,hist(double(dummy3(:)));
+figure,imagesc(SNR0/255);   %Red band
+title('all band')
+[R,G,B] = imsplit(SNR0);
+figure,imagesc(G>2e5 & G<3e5);
+title('green2')
+
+
+Please cite following article:
+
+Dipanjan Dutta, Tamesh Halder, Abhishek Penchala, Kandukoori Vamshi Krishna, Grajula Prashnath, Debashish Chakravarty “A Case Study on Image Co-Registration of Hyper-Spectral and Dual (L & S) Band SAR Data and Ore Findings Over Zewar Mines, India”, International Journal of Emerging Science and Engineering (IJESE), vol. 12, no. 6, pp. 17–25, May 2024, doi: 10.35940/ijese.A8055.12060524.
+
